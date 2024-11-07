@@ -8,6 +8,7 @@ A powerful Thai legal assistant with RAG techniques.
     ```
 - Install the package using pip:
     ```bash
+    pip install -r requirements.txt
     git clone https://github.com/BetterACS/LawBuddy
     cd LawBuddy
     pip install -e .
@@ -58,7 +59,33 @@ pipeline = IterativeQueryChunking.from_local_model(
 )
 ```
 
+🧪 Evaluation
+------------------
+
+To evaluate the model performance on specific tasks or legal document types, use the following script. This example shows how to evaluate on the **Civil** (`แพ่ง`) law type.
+```python
+import os
+from dotenv import load_dotenv
+from lawbuddy.eval import evaluate
+from lawbuddy.rag import IterativeQueryChunking
+
+# Load pipeline
+pipeline = IterativeQueryChunking.from_openai_model(model="gpt-3.5-turbo")
+
+# Load existing vector store
+pipeline.load_vector_store(path="spaces/iterative_query_chunking")
+
+# Get OpenAI API key
+openai_key = os.getenv('OPENAI_API_KEY')
+
+# Run evaluation
+evaluate(pipeline, type_name='แพ่ง', model='gpt-3.5-turbo', openai_key=openai_key)
+```
+
+
+
 🔧 Advanced Configuration
+------------------
 The system supports various configurations for both OpenAI and local models. You can customize:
 
 Chunk sizes for document processing
